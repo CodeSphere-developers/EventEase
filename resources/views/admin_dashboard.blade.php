@@ -19,7 +19,10 @@
                 </div>
                 <form action="{{ route('logout') }}" method="POST" class="ml-2">
                     @csrf
-                    <button class="bg-red-800 hover:bg-red-700 px-4 py-2 rounded text-sm">Logout</button>
+                    <button class="flex items-center gap-2 bg-blue-100 text-blue-700 rounded-full p-2 hover:bg-blue-200 transition-colors font-bold text-sm">
+                        <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1' /></svg>
+                        Logout
+                    </button>
                 </form>
             </div>
         </div>
@@ -58,9 +61,7 @@
                 @foreach($events as $event)
                     <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden flex flex-col h-full">
                         <div class="p-6 flex-grow">
-                            @if($event->image)
-                                <img src="{{ asset('storage/' . $event->image) }}" alt="Event Poster" class="w-full h-40 object-cover rounded mb-3 border">
-                            @endif
+                            {{-- Poster removed --}}
                             <div class="flex justify-between items-start">
                                 <span class="text-xs font-bold text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-1 rounded">
                                     {{ $event->category->name ?? 'General' }}
@@ -102,7 +103,13 @@
                         <div class="p-4 bg-gray-50 border-t border-gray-100">
                             <form action="{{ route('event.toggle', $event->id) }}" method="POST">
                                 @csrf
-                                <button class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded font-bold transition">Close Event</button>
+                                @if($event->status === 'open')
+                                    <button class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded font-bold transition">Close Event</button>
+                                @elseif($event->status === 'closed')
+                                    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded font-bold transition">Open Event</button>
+                                @else
+                                    <button class="w-full bg-yellow-400 hover:bg-yellow-500 text-white py-2 rounded font-bold transition">Set Open/Closed</button>
+                                @endif
                             </form>
                         </div>
                     </div>

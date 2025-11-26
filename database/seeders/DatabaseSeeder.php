@@ -38,8 +38,16 @@ class DatabaseSeeder extends Seeder
     // 3. Create Venues
     $hall = \App\Models\Venue::create(['name' => 'Main Hall', 'capacity' => 500]);
     $gym  = \App\Models\Venue::create(['name' => 'EventEase Gym', 'capacity' => 200]);
-    $complex = \App\Models\Venue::create(['name' => 'Sports Complex', 'capacity' => 2000]);
+    $basketball = \App\Models\Venue::create(['name' => 'Sports Complex (Basketball Court)', 'capacity' => 1000]);
+    $football = \App\Models\Venue::create(['name' => 'Sports Complex (Football pitch)', 'capacity' => 1000]);
     $lab  = \App\Models\Venue::create(['name' => 'Computer Lab', 'capacity' => 30]);
+
+    // Update existing 'Sports Complex' venues if there are exactly two
+    $sportsComplexes = \App\Models\Venue::where('name', 'Sports Complex')->get();
+    if ($sportsComplexes->count() === 2) {
+        $sportsComplexes[0]->update(['name' => 'Sports Complex (Basketball Court)']);
+        $sportsComplexes[1]->update(['name' => 'Sports Complex (Football pitch)']);
+    }
 
     // 4. Create Events
     \App\Models\Event::create([

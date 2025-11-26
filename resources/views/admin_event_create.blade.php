@@ -14,10 +14,6 @@
             </select>
         </div>
         <div>
-            <label class="block text-sm font-bold mb-1">Event Poster (Image)</label>
-            <input type="file" name="image" accept="image/*" class="w-full border p-2 rounded bg-white">
-        </div>
-        <div>
             <label class="block text-sm font-bold mb-1">Event Title</label>
             <input type="text" name="title" required class="w-full border p-2 rounded focus:ring ring-red-200">
         </div>

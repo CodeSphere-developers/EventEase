@@ -43,15 +43,6 @@
             </select>
         </div>
         <div class="space-y-2 border-b pb-4">
-            <label for="image" class="block text-sm font-bold mb-1 text-gray-700">Event Poster (optional)</label>
-            <input type="file" class="w-full border p-2 rounded bg-white" id="image" name="image">
-            @if($event->image)
-                <div class="mt-2">
-                    <img src="{{ asset('storage/' . $event->image) }}" alt="Event Poster" class="max-w-xs rounded shadow border">
-                </div>
-            @endif
-        </div>
-        <div class="space-y-2 border-b pb-4">
             <label for="announcement" class="block text-sm font-bold mb-1 text-gray-700">Event Announcement (optional)</label>
             <textarea class="w-full border rounded p-2 text-sm" id="announcement" name="announcement" rows="3" maxlength="1000" placeholder="Add an announcement or important info for this event...">{{ old('announcement', $event->announcement) }}</textarea>
         </div>

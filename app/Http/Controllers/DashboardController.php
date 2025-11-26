@@ -44,6 +44,11 @@ class DashboardController extends Controller
         if ($isSportsComplex) {
             $data['capacity'] = null;
         }
+        // Prevent updating event to a past date/time
+        $eventDate = strtotime($data['event_date']);
+        if ($eventDate < strtotime('now')) {
+            return back()->withErrors(['event_date' => 'You cannot set the event date/time in the past.']);
+        }
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('event_posters', 'public');
             $data['image'] = $path;
@@ -96,6 +101,11 @@ class DashboardController extends Controller
         $data = $request->validate($rules);
         if ($isSportsComplex) {
             $data['capacity'] = null;
+        }
+        // Prevent creating event in the past
+        $eventDate = strtotime($data['event_date']);
+        if ($eventDate < strtotime('now')) {
+            return back()->withErrors(['event_date' => 'You cannot create an event in the past.']);
         }
 
         // Handle image upload
