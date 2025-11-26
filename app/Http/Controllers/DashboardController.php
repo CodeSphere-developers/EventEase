@@ -146,7 +146,7 @@ class DashboardController extends Controller
             'user_id' => Auth::id(),
             'event_id' => $id
         ]);
-        return back()->with('success', 'Registration Confirmed! (School Sponsored)');
+    return back()->with('success', 'Registration Confirmed! (School Sponsored)');
     }
 
     // Student profile page: view registered events

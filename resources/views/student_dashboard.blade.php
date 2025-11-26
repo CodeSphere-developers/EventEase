@@ -164,9 +164,9 @@
                             $feedbacks = $event->feedbacks()->with('user')->orderBy('created_at', 'desc')->get();
                             $myFeedback = $event->feedbacks()->where('user_id', $user->id)->first();
                         @endphp
-                        @if(in_array($event->id, $registeredEventIds))
-                            <div class="mt-2">
-                                <h4 class="font-semibold text-sm text-gray-700 mb-1">Event Feedback</h4>
+                        <div class="mt-2">
+                            <h4 class="font-semibold text-sm text-gray-700 mb-1">Event Feedback</h4>
+                            @if(in_array($event->id, $registeredEventIds))
                                 <!-- Feedback Form -->
                                 @if(!$myFeedback)
                                     <form action="{{ route('event.feedback', $event->id) }}" method="POST" class="mb-2">
@@ -177,38 +177,38 @@
                                 @else
                                     <div class="bg-green-50 border border-green-200 text-green-800 text-xs rounded p-2 mb-2">You submitted feedback: <span class="font-semibold">"{{ $myFeedback->comment }}"</span></div>
                                 @endif
-                                <!-- List of feedbacks -->
-                                @if($feedbacks->count())
-                                    <div class="bg-gray-100 rounded p-2 max-h-32 overflow-y-auto">
-                                        @foreach($feedbacks as $fb)
-                                            <div class="mb-1 text-xs text-gray-700 flex items-center justify-between">
-                                                <span>
-                                                    <span class="font-bold">{{ $fb->user->name }}:</span> {{ $fb->comment }}
-                                                    <span class="text-gray-400 ml-2">({{ $fb->created_at->diffForHumans() }})</span>
-                                                </span>
-                                                @if(Auth::user() && (Auth::user()->role === 'admin' || Auth::user()->id === $fb->user_id))
-                                                    @if(Auth::user()->role === 'admin')
-                                                        <form action="{{ route('feedback.destroy', $fb->id) }}" method="POST" onsubmit="return confirm('Delete this feedback?');" class="ml-2">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="text-red-500 hover:text-red-700 font-bold text-xs">Delete</button>
-                                                        </form>
-                                                    @elseif(Auth::user()->id === $fb->user_id)
-                                                        <form action="{{ route('feedback.destroySelf', $fb->id) }}" method="POST" onsubmit="return confirm('Delete your feedback?');" class="ml-2">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="text-red-500 hover:text-red-700 font-bold text-xs">Delete</button>
-                                                        </form>
-                                                    @endif
+                            @endif
+                            <!-- List of feedbacks (public) -->
+                            @if($feedbacks->count())
+                                <div class="bg-gray-100 rounded p-2 max-h-32 overflow-y-auto mt-2">
+                                    @foreach($feedbacks as $fb)
+                                        <div class="mb-1 text-xs text-gray-700 flex items-center justify-between">
+                                            <span>
+                                                <span class="font-bold">{{ $fb->user->name }}:</span> {{ $fb->comment }}
+                                                <span class="text-gray-400 ml-2">({{ $fb->created_at->diffForHumans() }})</span>
+                                            </span>
+                                            @if(Auth::user() && (Auth::user()->role === 'admin' || Auth::user()->id === $fb->user_id))
+                                                @if(Auth::user()->role === 'admin')
+                                                    <form action="{{ route('feedback.destroy', $fb->id) }}" method="POST" onsubmit="return confirm('Delete this feedback?');" class="ml-2">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-500 hover:text-red-700 font-bold text-xs">Delete</button>
+                                                    </form>
+                                                @elseif(Auth::user()->id === $fb->user_id)
+                                                    <form action="{{ route('feedback.destroySelf', $fb->id) }}" method="POST" onsubmit="return confirm('Delete your feedback?');" class="ml-2">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-500 hover:text-red-700 font-bold text-xs">Delete</button>
+                                                    </form>
                                                 @endif
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <div class="text-xs text-gray-400">No feedback yet.</div>
-                                @endif
-                            </div>
-                        @endif
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="text-xs text-gray-400 mt-2">No feedback yet.</div>
+                            @endif
+                        </div>
                     </div>
 
                 </div>
