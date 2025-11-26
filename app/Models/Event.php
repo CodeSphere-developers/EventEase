@@ -9,9 +9,11 @@ class Event extends Model
 {
     use HasFactory;
 
-    // "guarded = []" means we can mass-assign any column (like title, date, etc.)
+    // "guarded = []" means we can mass-assign any column (like title, start_time, end_time, etc.)
     // It's the easiest setting for development.
     protected $guarded = [];
+    // Optionally, you can use $fillable instead if you want to be explicit:
+    // protected $fillable = ['title', 'event_date', 'category_id', 'venue_id', 'capacity', 'status', 'image', 'announcement'];
 
     // Relationship 1: An event belongs to a specific Category
     public function category()
@@ -29,5 +31,10 @@ class Event extends Model
     public function registrations()
     {
         return $this->hasMany(Registration::class);
+    }
+    // Relationship 4: An event has many feedbacks
+    public function feedbacks()
+    {
+        return $this->hasMany(\App\Models\Feedback::class);
     }
 }

@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            return redirect()->intended('/dashboard');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials.']);
@@ -34,23 +34,30 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    // Handle Registration Logic
+    // Handle Registration Logic (UPDATED)
     public function register(Request $request) {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed', // expects password_confirmation field
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'regex:/^[a-zA-Z]+\.[a-zA-Z]+@strathmore\.edu$/',
+                'unique:users,email'
+            ],
+            'password' => 'required|min:6|confirmed',
         ]);
+
+        $role = 'student';
 
         $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'name' => $data['firstname'] . ' ' . $data['lastname'],
+            'email' => strtolower($data['email']),
             'password' => Hash::make($data['password']),
-            'role' => 'student', // Default to student
+            'role' => $role,
         ]);
 
-        Auth::login($user);
-        return redirect('dashboard');
+    Auth::login($user);
+    return redirect('/dashboard');
     }
 
     // Handle Logout
